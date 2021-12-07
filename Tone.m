@@ -93,8 +93,9 @@ classdef Tone
             addingTimeVec = [];
             for i = 1 : length(tones)
                 concattedAmpVec = [concattedAmpVec tones(i).ampVector];
-                samplePeriod = tones(i).duration / tones(i).sampleRate;
+                samplePeriod = 1 / tones(i).sampleRate;
                 addingTimVec = concattedTimeVec(length(concattedTimeVec)) : samplePeriod : concattedTimeVec(length(concattedTimeVec)) + tones(i).duration - samplePeriod
+                disp(samplePeriod);
                 concattedTimeVec = [concattedTimeVec addingTimVec];
             end       
         end
