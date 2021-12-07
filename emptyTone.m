@@ -1,9 +1,9 @@
-classdef emptyTone < Tone 
+classdef EmptyTone < Tone 
     properties
     end
 
     methods
-        function obj = emptyTone(amplitudes, frequencies, phases, duration, sampleRate)
+        function obj = EmptyTone(amplitudes, frequencies, phases, duration, sampleRate)
            obj = obj@Tone([], [], [], 0, 0);
       end
     end
