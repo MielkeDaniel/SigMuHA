@@ -56,15 +56,11 @@ classdef Tone
           end
         end
 
-        function [timeVector, ampVector] = interferSounds(tones)
-            arguments
-                tones (1 , :)
-            end
+        function [timeVector, ampVector] = interferSounds(self, tones)
 
             for i = 1 : length(tones)
                 if ~(self.sampleRate == tones(i).sampleRate)
                     return;
-                    
                 end
                 disp("passt");
             end
