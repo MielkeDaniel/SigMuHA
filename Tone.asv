@@ -11,6 +11,44 @@ classdef Tone
     end
     
 
+    methods (Static)
+        function tone = createFromData(timeVector, dataVector, sampleRate)
+            % Description:
+            %   Constructs a new signal based on a time vector and a data
+            %   vector.
+            % 
+            % Syntax:
+            %   signal = Signal.createFromData(t, y,
+            %   fa)
+            arguments
+                timeVector (1,:)
+                dataVector (1,:)
+                sampleRate double
+            end
+
+            duration = length(timeVector) / sampleRate;
+
+            % Execute the fourier transform to extract amplitudes,
+            % frequencies and phases of the signal.
+            Y = fft(dataVector, sampleRate) / (sampleRate / 2);
+            frequencies = 0 : length(Y)-1;
+            amplitudes = abs(Y);
+            phases = angle(Y);
+
+            % Half sample rate
+            hsr = floor(sampleRate / 2);
+
+            % Construct the signal until the elements up the the half
+            % sample rate.
+            tone = Signal( ...
+                amplitudes(1:hsr), ...
+                frequencies(1:hsr), ...
+                phases(1:hsr), ...
+                duration, ...
+                sampleRate);
+        end
+    end
+    
     methods 
         function obj = Tone(amplitudes, frequencies, phases, duration, sampleRate)
             % Constructor
@@ -81,17 +119,29 @@ classdef Tone
             newTone = Tone(newAmps, newFreqs, newPhases, newDuration, self.sampleRate); 
         end
 
-        function concattedTone = concatTone(self, tones)
+        function [concattedTimeVec, concattedAmpVec] = concatTone(self, tones)
             arguments
                 self
                 tones(1, :)
             end
             concattedAmpVec = [self.ampVector];
-            concattedTimeVec = [self.timeVecor];
+            concattedTimeVec = [self.timeVector];
+            addingTimeVec = [];
             for i = 1 : length(tones)
                 concattedAmpVec = [concattedAmpVec tones(i).ampVector];
-                addingTimVec = concattedTimeVec(c)
+                samplePeriod = 1 / tones(i).sampleRate;
+                addingTimVec = concattedTimeVec(length(concattedTimeVec)) : samplePeriod : concattedTimeVec(length(concattedTimeVec)) + tones(i).duration - samplePeriod
+                concattedTimeVec = [concattedTimeVec addingTimVec];
             end       
+        end
+
+        function [concattedTimeVec, concattedAmpVec] = repeat(self, N)
+            arguments
+                self
+                N int32
+            end
+            newAmpVector = repmat(self.ampVector, 1, N);
+                  
         end
 
     end

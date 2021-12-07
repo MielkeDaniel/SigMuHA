@@ -11,7 +11,45 @@ classdef Tone
     end
     
 
-    methods 
+    methods (Static)
+        function tone = createFromData(timeVector, ampVector, sampleRate)
+            % Description:
+            %   Constructs a new signal based on a time vector and a data
+            %   vector.
+            % 
+            % Syntax:
+            %   signal = Signal.createFromData(t, y,
+            %   fa)
+            arguments
+                timeVector (1,:)
+                ampVector (1,:)
+                sampleRate double
+            end
+
+            duration = length(timeVector) / sampleRate;
+
+            % Execute the fourier transform to extract amplitudes,
+            % frequencies and phases of the signal.
+            Y = fft(ampVector, sampleRate) / (sampleRate / 2);
+            frequencies = 0 : length(Y)-1;
+            amplitudes = abs(Y);
+            phases = angle(Y);
+
+            % Half sample rate
+            hsr = floor(sampleRate / 2);
+
+            % Construct the signal until the elements up the the half
+            % sample rate.
+            tone = Tone( ...
+                amplitudes(1:hsr), ...
+                frequencies(1:hsr), ...
+                phases(1:hsr), ...
+                duration, ...
+                sampleRate);
+        end
+    end
+    
+    methods (Access = public)
         function obj = Tone(amplitudes, frequencies, phases, duration, sampleRate)
             % Constructor
             arguments
@@ -87,17 +125,38 @@ classdef Tone
                 tones(1, :)
             end
             concattedAmpVec = [self.ampVector];
-
             concattedTimeVec = [self.timeVector];
-            
             addingTimeVec = [];
             for i = 1 : length(tones)
                 concattedAmpVec = [concattedAmpVec tones(i).ampVector];
                 samplePeriod = 1 / tones(i).sampleRate;
                 addingTimVec = concattedTimeVec(length(concattedTimeVec)) : samplePeriod : concattedTimeVec(length(concattedTimeVec)) + tones(i).duration - samplePeriod
-                disp(samplePeriod);
                 concattedTimeVec = [concattedTimeVec addingTimVec];
             end       
+        end
+
+        function tone = repeat(self, N)
+            % Description:
+            %   Returns a time vector and data vector containing information
+            %   about this signal repeated N times using the FFT.
+            %
+            % Syntax:
+            %  signal = obj.repeat(N) returns the repeated signal
+            arguments
+                self
+                N int32
+            end
+
+            samplePeriod = 1 / double(self.sampleRate);
+            newTimeVector = 0 : samplePeriod : double(N) * self.duration - samplePeriod;
+            newAmpVector = repmat(self.ampVector, 1, N);
+
+            tone = Tone.createFromData(newTimeVector, newAmpVector, self.sampleRate);
+        end
+
+        function play(self)
+            % Sends the time discrete signal to the speakers
+            sound(self.ampVector, double(self.sampleRate));
         end
 
     end
