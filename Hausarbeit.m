@@ -2,16 +2,16 @@ clear;
 close all;
 clc;
 
-a = Tone(1, 1000, -pi/2, 1, 11025);
+a = Tone(1, 10, -pi/2, 1, 11025);
+b = Tone(0.5, 5, -pi/2, 5, 11025);
+d = Tone(1, 1, -pi/2, 3, 11025);
 
-processingAmpVec   = [0.0,  1.0,  0.9,  0.7,  0.0];
-processingTimeVec  = [0.0,  0.1,  0.3,  0.9,  1.0]; 
 
-sweifb = WindowFunction(processingAmpVec, processingTimeVec);
+c = a.concatTone([b, d]);
+newC = c.repeat(4);
 
-sweifb.relAmpVec(2) = 0.4;
 
-yVec = sweifb.funcGeneratePiecewiseLin(length(a.ampVector));
+plot(newC.timeVector, newC.ampVector);
 
 
 
