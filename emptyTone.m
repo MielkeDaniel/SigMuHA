@@ -3,8 +3,8 @@ classdef EmptyTone < Tone
     end
 
     methods
-        function obj = EmptyTone(amplitudes, frequencies, phases, duration, sampleRate)
-           obj = obj@Tone([], [], [], 0, 0);
+        function obj = EmptyTone(sampleRate)
+           obj = obj@Tone([], [], [], 0, smapleRate);
       end
     end
 end
