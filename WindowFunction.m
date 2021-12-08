@@ -16,8 +16,7 @@ classdef WindowFunction
             obj.relTimeVec = nRelTimeVec;  
         end
 
-
-        function yVec = calcWindowFunction(self, count)
+        function [xVec, yVec] = calcWindowFunction(self, count)
             arguments
                 self
                 count (1, :)
@@ -37,11 +36,11 @@ classdef WindowFunction
                 
                 if ( inc == 0 )
                     yVec(indexVec) = self.relAmpVec(k);
-                    disp("1");
                 else
                     yVec(indexVec) = self.relAmpVec(k) : inc : self.relAmpVec(k + 1) - inc;
-                    disp("2");
                 end
+                stepPeriod = 1 / count;
+                xVec = 0 : stepPeriod : 1 - stepPeriod;
             end
         end
     end
