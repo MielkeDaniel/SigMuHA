@@ -17,11 +17,12 @@ classdef WindowFunction
         end
 
 
-        function yVec = funcGeneratePiecewiseLin(self, count)
+        function yVec = calcWindowFunction(self, count)
             arguments
                 self
                 count (1, :)
             end
+            clc;
             nCount = floor(count);
             nTVec = floor(self.relTimeVec * nCount) + 1;       % Zeitvektor
             segmentCount = max(size(self.relTimeVec)); % size liefert Zeilen- und Spaltenzahl
@@ -42,7 +43,6 @@ classdef WindowFunction
                     disp("2");
                 end
             end
-            plot(yVec);
         end
     end
 end
