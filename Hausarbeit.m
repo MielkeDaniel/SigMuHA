@@ -2,10 +2,9 @@ clear;
 close all;
 clc;
 
-matrix = zeros(6, 10);
+emptyTone = EmptyTone(11025);
 
-matrix(2, 2) = 5;
-
+amplitudes = zeros(1, 5) + 0.1;
 
 
 

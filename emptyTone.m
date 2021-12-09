@@ -4,7 +4,7 @@ classdef EmptyTone < Tone
 
     methods
         function obj = EmptyTone(sampleRate)
-           obj = obj@Tone([], [], [], 0, smapleRate);
+           obj = obj@Tone([], [], [], 0, sampleRate);
       end
     end
 end
