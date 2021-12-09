@@ -58,10 +58,15 @@ classdef Tone
                 self
                 others(1, :)
             end
+
+            if (length(others) == 0)
+                return;
+            end
             for i = 1 : length(others)
                 if ~(self.sampleRate == others(i).sampleRate)
                     return;
                 end
+                disp(others);
                 self.ampVector = self.ampVector(1:self.sampleRate) + others(i).ampVector(1:self.sampleRate);
             end     
         end
