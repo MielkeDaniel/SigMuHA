@@ -2,9 +2,12 @@ clear;
 close all;
 clc;
 
-emptyTone = EmptyTone(11025);
+a1 = [1];
 
-amplitudes = zeros(1, 5) + 0.1;
+a1(1) = [];
+disp(null);
+
+
 
 
 
