@@ -14,11 +14,15 @@ classdef Instruments
             if(instrument == "guitar")
                 obj.baseTone = Tone(1, 82 * nthroot(2,12)^0, -pi/2, 1, 11025);
                 obj.scale = [];
-                for i = 1 : 6
-                    newTone = Tone(1, 82 * nthroot(2,12)^(i - 1), -pi/2, 1, 11025);
-                    obj.scale = [obj.scale newTone];
-                end
-                obj.toneNames = ["E", "A", "D", "G", "H", "E"];
+                obj.scale = [obj.scale Tone(1, 82 * nthroot(2,12)^(0 - 1), -pi/2, 1, 11025)];
+                obj.scale = [obj.scale Tone(1, 82 * nthroot(2,12)^(5 - 1), -pi/2, 1, 11025)];
+                obj.scale = [obj.scale Tone(1, 82 * nthroot(2,12)^(10 - 1), -pi/2, 1, 11025)];
+                obj.scale = [obj.scale Tone(1, 82 * nthroot(2,12)^(15 - 1), -pi/2, 1, 11025)];
+                obj.scale = [obj.scale Tone(1, 82 * nthroot(2,12)^(20 - 1), -pi/2, 1, 11025)];
+                obj.scale = [obj.scale Tone(1, 82 * nthroot(2,12)^(25 - 1), -pi/2, 1, 11025)];
+                
+                    
+                obj.toneNames = ["E", "A", "D", "G", "B", "E"];
             else if(instrument == "piano")
                     obj.baseTone = Tone(1, 82 * nthroot(2,12)^0, -pi/2, 1, 11025);
                     obj.scale = [];
