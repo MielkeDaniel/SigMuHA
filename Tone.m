@@ -1,3 +1,7 @@
+% The class tone is the heart of this program. Instances of it contain the
+% data-/amplitude- vectors to be able to play, concat, repeat, normalize
+% interfer them.
+
 classdef Tone
 
     properties     
@@ -9,9 +13,12 @@ classdef Tone
         ampVector (1,:)        
     end
     
+
     methods (Access = public)
+        %% Constructor
+        % Constructing an instance requires all the data to forge a signal
+        % out of it.
         function obj = Tone(amplitudes, frequencies, phases, duration, sampleRate)
-            % Constructor
             arguments
                 amplitudes (1,:)
                 frequencies (1,:)
@@ -29,14 +36,14 @@ classdef Tone
             obj.ampVector = ampVector;
             obj.timeVector = timeVector;
         end
-
+        
+        %% Generate Soundsignal
         function [timeVector, ampVector] = generateSound(self, amplitudes, frequencies, phases, sampleRate, duration)
-          % Description:
-          %   This function generates a signal using the elements of the given
-          %   amplitude, frequency and phase vectors.
-          %   Syntax:
-          %   [t, y] = generateSound(A, f, p, fa, t) returns a time vector t and
-          %   the sum of wave functions y.
+          % This function generates a signal using the elements of the given
+          % amplitude, frequency and phase vectors. 
+          % It loop of each element in the amplitudes(-list), creates a
+          % sinuswave out of it, and interfers it each iteration with the
+          % existing ampVectors
           num_amps = length(amplitudes);
           sample_period = 1 / double(sampleRate);
           
@@ -51,7 +58,8 @@ classdef Tone
               ampVector = ampVector + A * cos(2 * pi * f * timeVector + p);
           end
         end
-
+        
+        %% Interfer Sounds
         function self = interferSounds(self, others)
             % Interfers the sound it self, with given other tones as props
             % for any wanted Duration
@@ -59,7 +67,9 @@ classdef Tone
                 self
                 others(1, :)
             end
-
+            
+            % After verifying, that all the samplerates are egual, the function loops over the given list and interfers their ampVectors with
+            % each other by the '+'-Operator
             for i = 1 : length(others)
                 if ~(self.sampleRate == others(i).sampleRate)
                     return;
@@ -69,7 +79,12 @@ classdef Tone
             end     
         end
 
+        %% Concat Tones
         function self = concatTone(self, others)
+            % After verifying, that all the samplerates are egual, the
+            % function loops over the given list,
+            % adds up their durations, frequencies and concats their
+            % ampVectors
             arguments
                 self
                 others(1, :)
@@ -87,7 +102,10 @@ classdef Tone
             self.timeVector = 0 : self.samplePeriod : totalDuration - self.samplePeriod;
         end
 
+        %% Repeat tone
         function self = repeat(self, N)
+            % Calculates it´s new timevector and repeats it´s ampvector via
+            % repmat(...)
             arguments
                 self
                 N int32
@@ -96,9 +114,16 @@ classdef Tone
             self.ampVector = repmat(self.ampVector, 1, N);
         end
 
+        %% Play tone
         function play(self)
             % Sends the time discrete signal to the speakers
             sound(self.ampVector, double(self.sampleRate));
+        end
+
+        %% Normalize ampvector
+        function self = normalize(self)
+            % To prevend it from oversteering when played
+            self.ampVector = self.ampVector ./ max(self.ampVector);
         end
 
     end
