@@ -7,7 +7,8 @@ clc;
 
 filename = inputdlg("Filename: ");
 
-disp(filename(1));
+
+disp(filename{1});
 
 
 
