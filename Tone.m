@@ -64,7 +64,7 @@ classdef Tone
                 if ~(self.sampleRate == others(i).sampleRate)
                     return;
                 end
-                self.ampVector = self.ampVector(1:self.sampleRate) + others(i).ampVector(1:self.sampleRate);
+                self.ampVector = self.ampVector(1:length(self.ampVector)) + others(i).ampVector(1:length(self.ampVector));
                 self.frequencies = [self.frequencies others(i).frequencies];
             end     
         end
