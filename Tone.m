@@ -8,7 +8,6 @@ classdef Tone
         ampVector (1,:)        
     end
     
-    
     methods (Access = public)
         function obj = Tone(amplitudes, frequencies, phases, duration, sampleRate)
             % Constructor
