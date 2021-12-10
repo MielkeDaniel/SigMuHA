@@ -1,0 +1,16 @@
+clear;
+close all;
+clc;
+
+
+
+
+filename = inputdlg("Filename: ");
+
+disp(typecast(filename), String);
+
+
+
+
+
+

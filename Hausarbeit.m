@@ -2,14 +2,12 @@ clear;
 close all;
 clc;
 
-a1 = [1];
-
-a1(1) = [];
-disp(null);
 
 
 
+filename = inputdlg("Filename: ");
 
+disp(filename(1));
 
 
 
