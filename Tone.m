@@ -4,6 +4,7 @@ classdef Tone
         sampleRate double
         samplePeriod double
         duration double
+        frequencies (1,:)
         timeVector (1,:)
         ampVector (1,:)        
     end
@@ -22,6 +23,7 @@ classdef Tone
             obj.duration = duration;
             obj.sampleRate = sampleRate;
             obj.samplePeriod = 1 / sampleRate;
+            obj.frequencies = frequencies;
             % Generates the Signalvectors with given properties
             [timeVector, ampVector] = obj.generateSound(amplitudes, frequencies, phases, sampleRate, duration);
             obj.ampVector = ampVector;
@@ -63,6 +65,7 @@ classdef Tone
                     return;
                 end
                 self.ampVector = self.ampVector(1:self.sampleRate) + others(i).ampVector(1:self.sampleRate);
+                self.frequencies = [self.frequencies others(i).frequencies];
             end     
         end
 
@@ -78,6 +81,7 @@ classdef Tone
                 end
                 totalDuration = totalDuration + others(i).duration;
                 self.ampVector = [self.ampVector others(i).ampVector];
+                self.frequencies = [self.frequencies others(i).frequencies];
             end  
             self.duration = totalDuration;
             self.timeVector = 0 : self.samplePeriod : totalDuration - self.samplePeriod;
