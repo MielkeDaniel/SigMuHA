@@ -125,6 +125,5 @@ classdef Tone
             % To prevend it from oversteering when played
             self.ampVector = self.ampVector ./ max(self.ampVector);
         end
-
     end
 end
